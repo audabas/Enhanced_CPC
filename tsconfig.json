@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es5",
+        "noImplicitAny": false,
+        "sourceMap": false,
+        "removeComments": false,
+        "outFile": "build/CPC_Enhancer.user.js"
+    },
+    "files": [
+        "src/headers.ts",
+        "src/main.ts"
+    ]
+}
