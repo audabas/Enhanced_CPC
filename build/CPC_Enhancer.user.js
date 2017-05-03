@@ -10,6 +10,7 @@ var UI;
 (function (UI) {
     function init() {
         removeCarrousel();
+        removeArticlesImages();
     }
     UI.init = init;
     function removeCarrousel() {
@@ -20,6 +21,13 @@ var UI;
         }
         if (summaryCarrousel != null) {
             summaryCarrousel.parentNode.removeChild(summaryCarrousel);
+        }
+    }
+    function removeArticlesImages() {
+        var images = document.querySelectorAll(".node--promoted a img");
+        for (var i = 0; i < images.length; i++) {
+            var image = images[i];
+            image.parentNode.removeChild(image);
         }
     }
 })(UI || (UI = {}));

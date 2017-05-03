@@ -1,6 +1,7 @@
 namespace UI {
     export function init() {
         removeCarrousel();
+        removeArticlesImages();
     }
 
     function removeCarrousel() {
@@ -12,6 +13,16 @@ namespace UI {
         }
         if(summaryCarrousel != null) {
             summaryCarrousel.parentNode.removeChild(summaryCarrousel);
+        }
+    }
+
+    function removeArticlesImages() {
+        let images = document.querySelectorAll(".node--promoted a img");
+
+        for(var i = 0; i < images.length; i++) {
+            let image = images[i];
+
+            image.parentNode.removeChild(image);
         }
     }
 }
