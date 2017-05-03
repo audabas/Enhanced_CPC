@@ -11,6 +11,7 @@ var UI;
     function init() {
         removeCarrousel();
         removeArticlesImages();
+        articleNavFixedPosition();
     }
     UI.init = init;
     function removeCarrousel() {
@@ -29,6 +30,13 @@ var UI;
             var image = images[i];
             image.parentNode.removeChild(image);
         }
+    }
+    function articleNavFixedPosition() {
+        var articleNav = document.getElementsByClassName("article-nav")[0];
+        var topOffset = articleNav.getBoundingClientRect().top;
+        articleNav.style.position = "fixed";
+        articleNav.style.top = topOffset + "px";
+        articleNav.style.zIndex = "999";
     }
 })(UI || (UI = {}));
 /// <reference path="custom_ui.ts" />

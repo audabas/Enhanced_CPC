@@ -2,6 +2,7 @@ namespace UI {
     export function init() {
         removeCarrousel();
         removeArticlesImages();
+        articleNavFixedPosition();
     }
 
     function removeCarrousel() {
@@ -24,5 +25,15 @@ namespace UI {
 
             image.parentNode.removeChild(image);
         }
+    }
+
+    function articleNavFixedPosition() {
+        let articleNav = <HTMLElement> document.getElementsByClassName("article-nav")[0];
+
+        let topOffset = articleNav.getBoundingClientRect().top;
+
+        articleNav.style.position = "fixed";
+        articleNav.style.top = topOffset + "px";
+        articleNav.style.zIndex = "999";
     }
 }
