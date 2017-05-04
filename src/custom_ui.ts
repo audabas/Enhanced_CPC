@@ -1,19 +1,25 @@
 namespace UI {
     export function init() {
-        removeCarrousel();
-        removeArticlesImages();
-        articleNavFixedPosition();
+        if(Preferences.getPreference(Preferences.PrefKey.HideCarousel)) {
+            removeCarousel();
+        }
+        if(Preferences.getPreference(Preferences.PrefKey.HideSummaryImages)) {
+            removeArticlesImages();
+        }
+        if(Preferences.getPreference(Preferences.PrefKey.FixArticleNavPosition)) {
+            articleNavFixedPosition();
+        }
     }
 
-    function removeCarrousel() {
-        let carrousel = document.getElementById("block-homepagecarrousel");
-        let summaryCarrousel = document.getElementById("block-numerocarrousel");
+    function removeCarousel() {
+        let carousel = document.getElementById("block-homepagecarrousel");
+        let summaryCarousel = document.getElementById("block-numerocarrousel");
 
-        if(carrousel != null) {
-            carrousel.parentNode.removeChild(carrousel);
+        if(carousel != null) {
+            carousel.parentNode.removeChild(carousel);
         }
-        if(summaryCarrousel != null) {
-            summaryCarrousel.parentNode.removeChild(summaryCarrousel);
+        if(summaryCarousel != null) {
+            summaryCarousel.parentNode.removeChild(summaryCarousel);
         }
     }
 
@@ -30,10 +36,18 @@ namespace UI {
     function articleNavFixedPosition() {
         let articleNav = <HTMLElement> document.getElementsByClassName("article-nav")[0];
 
+        if(!articleNav) {
+            return;
+        }
+
         let topOffset = articleNav.getBoundingClientRect().top;
 
         articleNav.style.position = "fixed";
         articleNav.style.top = topOffset + "px";
-        articleNav.style.zIndex = "999";
+        articleNav.style.zIndex = "9";
     }
+
+    /*function zenModeScrollDisable() {
+
+    }*/
 }
