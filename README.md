@@ -4,6 +4,7 @@
 
 - Sommaire plus compact en supprimant le carousel et les images
 - Fixe la position du navigateur d'article
+- Modification de la police par une plus lisible
 
 ### Installation
 

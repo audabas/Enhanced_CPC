@@ -4,7 +4,8 @@ namespace Preferences {
     export enum PrefKey {
         HideCarousel,
         HideSummaryImages,
-        FixArticleNavPosition
+        FixArticleNavPosition,
+        SansSerifFont
     }
 
     export function setPreference( key : PrefKey, enabled : boolean ) {
@@ -64,7 +65,8 @@ namespace Preferences {
     let preferences : Array<PreferenceEntry> = [
         new PreferenceEntry(PrefKey.HideCarousel, "Masquer \"À la Une\""),
         new PreferenceEntry(PrefKey.HideSummaryImages, "Masquer les images dans le sommaire"),
-        new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles")
+        new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles"),
+        new PreferenceEntry(PrefKey.SansSerifFont, "Utiliser une police sans serif")        
     ]
 
     /* Init */

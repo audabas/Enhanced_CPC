@@ -9,6 +9,9 @@ namespace UI {
         if(Preferences.getPreference(Preferences.PrefKey.FixArticleNavPosition)) {
             articleNavFixedPosition();
         }
+        if(Preferences.getPreference(Preferences.PrefKey.SansSerifFont)) {
+            changeFontSansSerif();
+        }
     }
 
     function removeCarousel() {
@@ -47,7 +50,7 @@ namespace UI {
         articleNav.style.zIndex = "9";
     }
 
-    /*function zenModeScrollDisable() {
-
-    }*/
+    function changeFontSansSerif () {
+        document.body.style.fontFamily = "Arial, Helvetica, sans-serif";
+    }
 }

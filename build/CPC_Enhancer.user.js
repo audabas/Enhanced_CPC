@@ -14,6 +14,7 @@ var Preferences;
         PrefKey[PrefKey["HideCarousel"] = 0] = "HideCarousel";
         PrefKey[PrefKey["HideSummaryImages"] = 1] = "HideSummaryImages";
         PrefKey[PrefKey["FixArticleNavPosition"] = 2] = "FixArticleNavPosition";
+        PrefKey[PrefKey["SansSerifFont"] = 3] = "SansSerifFont";
     })(PrefKey = Preferences.PrefKey || (Preferences.PrefKey = {}));
     function setPreference(key, enabled) {
         var keyName = PrefKey[key];
@@ -63,7 +64,8 @@ var Preferences;
     var preferences = [
         new PreferenceEntry(PrefKey.HideCarousel, "Masquer \"À la Une\""),
         new PreferenceEntry(PrefKey.HideSummaryImages, "Masquer les images dans le sommaire"),
-        new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles")
+        new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles"),
+        new PreferenceEntry(PrefKey.SansSerifFont, "Utiliser une police sans serif")
     ];
     /* Init */
     function init() {
@@ -145,6 +147,9 @@ var UI;
         if (Preferences.getPreference(Preferences.PrefKey.FixArticleNavPosition)) {
             articleNavFixedPosition();
         }
+        if (Preferences.getPreference(Preferences.PrefKey.SansSerifFont)) {
+            changeFontSansSerif();
+        }
     }
     UI.init = init;
     function removeCarousel() {
@@ -174,9 +179,9 @@ var UI;
         articleNav.style.top = topOffset + "px";
         articleNav.style.zIndex = "9";
     }
-    /*function zenModeScrollDisable() {
-
-    }*/
+    function changeFontSansSerif() {
+        document.body.style.fontFamily = "Arial, Helvetica, sans-serif";
+    }
 })(UI || (UI = {}));
 /// <reference path="preferences.ts" />
 /// <reference path="custom_ui.ts" />
