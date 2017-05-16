@@ -12,4 +12,4 @@ Vous devez avoir l'extension [Greasemonkey](https://addons.mozilla.org/fr/firefo
 
 Cliquez sur le fichier **CPC_Enhancer.user.js** de la [dernière release](https://github.com/bastien09/Enhanced_CPC/releases/latest).
 
-Rendes vous sur [www.canardpc.com](https://www.canardpc.com) et ajustez les paramètres dans le menu profil en haut à gauche.
+Rendez vous sur [www.canardpc.com](https://www.canardpc.com) et ajustez les paramètres dans le menu profil en haut à gauche.
