@@ -1,7 +1,9 @@
 /// <reference path="preferences.ts" />
 /// <reference path="custom_ui.ts" />
+/// <reference path="summary.ts" />
 
 function init() {
+    Summary.init();
     UI.init();
     Preferences.init();
 }

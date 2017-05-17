@@ -5,7 +5,7 @@
         "noImplicitAny": false,
         "sourceMap": false,
         "removeComments": false,
-        "outFile": "build/CPC_Enhancer.user.js"
+        "outFile": "build/Enhanced_CPC.user.js"
     },
     "files": [
         "src/headers.ts",

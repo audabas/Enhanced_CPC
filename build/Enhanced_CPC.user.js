@@ -15,6 +15,7 @@ var Preferences;
         PrefKey[PrefKey["HideSummaryImages"] = 1] = "HideSummaryImages";
         PrefKey[PrefKey["FixArticleNavPosition"] = 2] = "FixArticleNavPosition";
         PrefKey[PrefKey["SansSerifFont"] = 3] = "SansSerifFont";
+        PrefKey[PrefKey["SummaryOrder"] = 4] = "SummaryOrder";
     })(PrefKey = Preferences.PrefKey || (Preferences.PrefKey = {}));
     function setPreference(key, enabled) {
         var keyName = PrefKey[key];
@@ -65,6 +66,7 @@ var Preferences;
         new PreferenceEntry(PrefKey.HideCarousel, "Masquer \"À la Une\""),
         new PreferenceEntry(PrefKey.HideSummaryImages, "Masquer les images dans le sommaire"),
         new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles"),
+        new PreferenceEntry(PrefKey.SummaryOrder, "Naviguer dans l'ordre du sommaire"),
         new PreferenceEntry(PrefKey.SansSerifFont, "Utiliser une police sans serif")
     ];
     /* Init */
@@ -183,9 +185,140 @@ var UI;
         document.body.style.fontFamily = "Arial, Helvetica, sans-serif";
     }
 })(UI || (UI = {}));
+var Summary;
+(function (Summary) {
+    /* Utils */
+    /* Classes */
+    var Sommaire = (function () {
+        function Sommaire() {
+            this.number = -1;
+            this.articles = [];
+            if (this.getCurrentNumber() > -1) {
+                this.getSummary();
+            }
+        }
+        Sommaire.prototype.getCurrentNumber = function () {
+            var _this = this;
+            var url = location.pathname;
+            var regExps = [
+                /\/news\/(\d+)/,
+                /\/news-online\/(\d+)/,
+                /\/news-hardware\/(\d+)/,
+                /\/(\d+)\/.+/
+            ];
+            regExps.forEach(function (RegExp) {
+                var match = url.match(RegExp);
+                if (match) {
+                    _this.number = parseInt(match[1]);
+                }
+            });
+            return this.number;
+        };
+        Sommaire.prototype.getSummary = function () {
+            var _this = this;
+            var storedSummary = localStorage.getItem("summary-" + this.number);
+            if (storedSummary != null) {
+                this.articles = JSON.parse(storedSummary);
+                overrideArticleNav(this);
+            }
+            else {
+                fetch("/numero/" + this.number).then(function (data) { return data.text(); }).then(function (data) {
+                    var parser = new DOMParser();
+                    var summaryPage = parser.parseFromString(data, "text/html");
+                    var summaryLinks = summaryPage.querySelectorAll(".views-field-title > a");
+                    for (var i = 0; i < summaryLinks.length; i++) {
+                        var url = summaryLinks[i].getAttribute("href");
+                        _this.articles.push(url);
+                    }
+                    var jsonArticles = JSON.stringify(_this.articles);
+                    localStorage.setItem("summary-" + _this.number, jsonArticles);
+                    overrideArticleNav(_this);
+                });
+            }
+        };
+        Sommaire.prototype.getCurrentIndex = function () {
+            var url = location.pathname;
+            return this.articles.indexOf(url);
+        };
+        Sommaire.prototype.getPreviousArticle = function () {
+            var idx = this.getCurrentIndex();
+            if (idx > 0) {
+                return this.articles[idx - 1];
+            }
+            else {
+                return "";
+            }
+        };
+        Sommaire.prototype.getNextArticle = function () {
+            var idx = this.getCurrentIndex();
+            if (idx + 1 < this.articles.length) {
+                return this.articles[idx + 1];
+            }
+            else {
+                return "";
+            }
+        };
+        return Sommaire;
+    }());
+    /* Init */
+    function init() {
+        if (Preferences.getPreference(Preferences.PrefKey.SummaryOrder)) {
+            var summary = new Sommaire();
+        }
+    }
+    Summary.init = init;
+    /* Functions */
+    function overrideArticleNav(summary) {
+        var previousUrl = summary.getPreviousArticle();
+        var nextUrl = summary.getNextArticle();
+        var articleNav = document.getElementsByClassName("article-nav")[0] || createArticleNav(summary.number);
+        var articleNavLeft = articleNav.getElementsByClassName("article-nav-left")[0];
+        var articleNavRight = articleNav.getElementsByClassName("article-nav-right")[0];
+        if (previousUrl == "") {
+            articleNavLeft.parentElement.removeChild(articleNavLeft);
+        }
+        else {
+            articleNavLeft.setAttribute("href", previousUrl);
+        }
+        if (nextUrl == "") {
+            articleNavRight.parentElement.removeChild(articleNavRight);
+        }
+        else {
+            articleNavRight.setAttribute("href", nextUrl);
+        }
+    }
+    function createArticleNav(numero) {
+        var articleTop = document.getElementById("block-hautdepage");
+        var articleNav = document.createElement("div");
+        articleNav.className = "article-nav";
+        var articleNavWrapper = document.createElement("div");
+        articleNavWrapper.className = "article-nav-wrapper";
+        var articleNavLeft = document.createElement("a");
+        articleNavLeft.className = "article-nav-left";
+        var articleNavRight = document.createElement("a");
+        articleNavRight.className = "article-nav-right";
+        var articleNavNumero = document.createElement("div");
+        articleNavNumero.className = "article-numero";
+        var articleNavNumeroLink = document.createElement("a");
+        var articleNavNumeroSpan = document.createElement("span");
+        var articleNavNumeroText = document.createTextNode(numero.toString());
+        articleNavNumeroLink.setAttribute("href", "/numero/" + numero + "#sommaire");
+        articleNavNumeroSpan.appendChild(articleNavNumeroText);
+        articleNavNumeroLink.appendChild(articleNavNumeroSpan);
+        articleNavNumero.appendChild(articleNavNumeroLink);
+        articleNavWrapper.appendChild(articleNavNumero);
+        articleNavWrapper.appendChild(articleNavLeft);
+        articleNavWrapper.appendChild(articleNavRight);
+        articleNav.appendChild(articleNavWrapper);
+        articleTop.appendChild(articleNav);
+        return articleNav;
+    }
+})(Summary || (Summary = {}));
 /// <reference path="preferences.ts" />
 /// <reference path="custom_ui.ts" />
+/// <reference path="summary.ts" />
 function init() {
+    Summary.init();
     UI.init();
     Preferences.init();
 }

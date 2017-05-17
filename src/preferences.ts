@@ -5,7 +5,8 @@ namespace Preferences {
         HideCarousel,
         HideSummaryImages,
         FixArticleNavPosition,
-        SansSerifFont
+        SansSerifFont,
+        SummaryOrder
     }
 
     export function setPreference( key : PrefKey, enabled : boolean ) {
@@ -66,6 +67,7 @@ namespace Preferences {
         new PreferenceEntry(PrefKey.HideCarousel, "Masquer \"À la Une\""),
         new PreferenceEntry(PrefKey.HideSummaryImages, "Masquer les images dans le sommaire"),
         new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles"),
+        new PreferenceEntry(PrefKey.SummaryOrder, "Naviguer dans l'ordre du sommaire"),
         new PreferenceEntry(PrefKey.SansSerifFont, "Utiliser une police sans serif")        
     ]
 
