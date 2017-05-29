@@ -5,6 +5,8 @@
 - Naviguer entre les articles dans le même ordre que le sommaire (news comprises)
 - Sommaire plus compact en supprimant le carousel et les images
 - Fixe la position du navigateur d'article
+- Toujours afficher la fiche complète du jeu
+- Rechercher le jeu sur [IsThereAnyDeal](https://isthereanydeal.com/)
 - Modification de la police par une plus lisible
 
 ### Installation

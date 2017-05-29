@@ -46,6 +46,10 @@ namespace Summary {
 
                     let summaryLinks = summaryPage.querySelectorAll(".views-field-title > a");
 
+                    if(summaryLinks.length == 0) { // Numéro pas encore sorti
+                        return;
+                    }
+
                     for(var i = 0; i < summaryLinks.length; i++) {
                         let url = summaryLinks[i].getAttribute("href");
 

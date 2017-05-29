@@ -3,7 +3,7 @@
 // @namespace   https://github.com/bastien09
 // @homepageURL https://github.com/bastien09/Enhanced_CPC
 // @include     https://www.canardpc.com/*
-// @version     0.1
+// @version     1.1
 // @grant       none
 // ==/UserScript== 
 var Preferences;
@@ -16,6 +16,8 @@ var Preferences;
         PrefKey[PrefKey["FixArticleNavPosition"] = 2] = "FixArticleNavPosition";
         PrefKey[PrefKey["SansSerifFont"] = 3] = "SansSerifFont";
         PrefKey[PrefKey["SummaryOrder"] = 4] = "SummaryOrder";
+        PrefKey[PrefKey["ShowGameMore"] = 5] = "ShowGameMore";
+        PrefKey[PrefKey["ShowBuyLink"] = 6] = "ShowBuyLink";
     })(PrefKey = Preferences.PrefKey || (Preferences.PrefKey = {}));
     function setPreference(key, enabled) {
         var keyName = PrefKey[key];
@@ -67,6 +69,8 @@ var Preferences;
         new PreferenceEntry(PrefKey.HideSummaryImages, "Masquer les images dans le sommaire"),
         new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles"),
         new PreferenceEntry(PrefKey.SummaryOrder, "Naviguer dans l'ordre du sommaire"),
+        new PreferenceEntry(PrefKey.ShowGameMore, "Toujours afficher la fiche complète du jeu"),
+        new PreferenceEntry(PrefKey.ShowBuyLink, "Afficher un lien vers IsThereAnyDeal"),
         new PreferenceEntry(PrefKey.SansSerifFont, "Utiliser une police sans serif")
     ];
     /* Init */
@@ -139,6 +143,7 @@ var Preferences;
 })(Preferences || (Preferences = {}));
 var UI;
 (function (UI) {
+    /* Init */
     function init() {
         if (Preferences.getPreference(Preferences.PrefKey.HideCarousel)) {
             removeCarousel();
@@ -152,8 +157,15 @@ var UI;
         if (Preferences.getPreference(Preferences.PrefKey.SansSerifFont)) {
             changeFontSansSerif();
         }
+        if (Preferences.getPreference(Preferences.PrefKey.ShowGameMore)) {
+            showGameMore();
+        }
+        if (Preferences.getPreference(Preferences.PrefKey.ShowBuyLink)) {
+            addBuyLink();
+        }
     }
     UI.init = init;
+    /* Functions */
     function removeCarousel() {
         var carousel = document.getElementById("block-homepagecarrousel");
         var summaryCarousel = document.getElementById("block-numerocarrousel");
@@ -183,6 +195,32 @@ var UI;
     }
     function changeFontSansSerif() {
         document.body.style.fontFamily = "Arial, Helvetica, sans-serif";
+    }
+    function showGameMore() {
+        var gameMore = document.getElementsByClassName("game-more")[0];
+        var gameMoreButton = document.getElementsByClassName("game-more-btn")[0];
+        if (!gameMore || !gameMoreButton) {
+            return;
+        }
+        gameMore.style.display = "block";
+        gameMoreButton.parentNode.removeChild(gameMoreButton);
+    }
+    function addBuyLink() {
+        var gameTitle = document.getElementsByClassName("game-title")[0];
+        if (!gameTitle) {
+            return "";
+        }
+        var title = gameTitle.textContent;
+        var buyLinkEntry = document.createElement("div");
+        buyLinkEntry.style.fontSize = "12px";
+        buyLinkEntry.style.marginBottom = "8px";
+        var buyLink = document.createElement("a");
+        var buyText = document.createTextNode("Comparer les prix");
+        buyLink.setAttribute("href", "https://isthereanydeal.com/search/?q=" + title);
+        buyLink.setAttribute("target", "_blank");
+        buyLink.appendChild(buyText);
+        buyLinkEntry.appendChild(buyLink);
+        gameTitle.parentElement.insertBefore(buyLinkEntry, gameTitle.nextSibling);
     }
 })(UI || (UI = {}));
 var Summary;
@@ -226,6 +264,9 @@ var Summary;
                     var parser = new DOMParser();
                     var summaryPage = parser.parseFromString(data, "text/html");
                     var summaryLinks = summaryPage.querySelectorAll(".views-field-title > a");
+                    if (summaryLinks.length == 0) {
+                        return;
+                    }
                     for (var i = 0; i < summaryLinks.length; i++) {
                         var url = summaryLinks[i].getAttribute("href");
                         _this.articles.push(url);

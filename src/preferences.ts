@@ -6,7 +6,9 @@ namespace Preferences {
         HideSummaryImages,
         FixArticleNavPosition,
         SansSerifFont,
-        SummaryOrder
+        SummaryOrder,
+        ShowGameMore,
+        ShowBuyLink
     }
 
     export function setPreference( key : PrefKey, enabled : boolean ) {
@@ -68,7 +70,9 @@ namespace Preferences {
         new PreferenceEntry(PrefKey.HideSummaryImages, "Masquer les images dans le sommaire"),
         new PreferenceEntry(PrefKey.FixArticleNavPosition, "Fixer la position du navigateur d'articles"),
         new PreferenceEntry(PrefKey.SummaryOrder, "Naviguer dans l'ordre du sommaire"),
-        new PreferenceEntry(PrefKey.SansSerifFont, "Utiliser une police sans serif")        
+        new PreferenceEntry(PrefKey.ShowGameMore, "Toujours afficher la fiche complète du jeu"),
+        new PreferenceEntry(PrefKey.ShowBuyLink, "Afficher un lien vers IsThereAnyDeal"),
+        new PreferenceEntry(PrefKey.SansSerifFont, "Utiliser une police sans serif")
     ]
 
     /* Init */
