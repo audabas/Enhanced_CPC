@@ -36,7 +36,7 @@ namespace Summary {
         getSummary() {
             let storedSummary = localStorage.getItem("summary-" + this.number);
 
-            if(storedSummary != null) {
+            if(storedSummary !== null) {
                 this.articles = JSON.parse(storedSummary);
                 overrideArticleNav(this);
             } else {
@@ -46,7 +46,7 @@ namespace Summary {
 
                     let summaryLinks = summaryPage.querySelectorAll(".views-field-title > a");
 
-                    if(summaryLinks.length == 0) { // Numéro pas encore sorti
+                    if(summaryLinks.length === 0) { // Numéro pas encore sorti
                         return;
                     }
 

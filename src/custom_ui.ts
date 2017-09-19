@@ -27,10 +27,10 @@ namespace UI {
         let carousel = document.getElementById("block-homepagecarrousel");
         let summaryCarousel = document.getElementById("block-numerocarrousel");
 
-        if(carousel != null) {
+        if(carousel !== null) {
             carousel.parentNode.removeChild(carousel);
         }
-        if(summaryCarousel != null) {
+        if(summaryCarousel !== null) {
             summaryCarousel.parentNode.removeChild(summaryCarousel);
         }
     }

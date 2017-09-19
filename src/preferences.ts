@@ -48,15 +48,17 @@ namespace Preferences {
             let checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.checked = isEnabled;
-            checkbox.addEventListener("change", (e) => {
-                let c = <HTMLInputElement> e.srcElement;
-                setPreference(this.key, c.checked);
-            })
-
+            checkbox.style.webkitAppearance = "checkbox";
+            
             labelElement.appendChild(checkbox);
             labelElement.appendChild(labelText);
 
             container.appendChild(labelElement);
+
+            checkbox.addEventListener("change", (e) => {
+                let c = <HTMLInputElement> e.srcElement;
+                setPreference(this.key, c.checked);
+            });
 
             return container;
         }

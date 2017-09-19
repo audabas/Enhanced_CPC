@@ -3,9 +3,10 @@
 // @namespace   https://github.com/bastien09
 // @homepageURL https://github.com/bastien09/Enhanced_CPC
 // @include     https://www.canardpc.com/*
-// @version     1.1
+// @version     1.1.1
 // @grant       none
-// ==/UserScript== 
+// ==/UserScript==
+// 
 var Preferences;
 (function (Preferences) {
     /* Utils */
@@ -35,7 +36,7 @@ var Preferences;
     }
     Preferences.getPreference = getPreference;
     /* Classes */
-    var PreferenceEntry = (function () {
+    var PreferenceEntry = /** @class */ (function () {
         function PreferenceEntry(key, label) {
             this.key = key;
             this.label = label;
@@ -51,13 +52,14 @@ var Preferences;
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.checked = isEnabled;
+            checkbox.style.webkitAppearance = "checkbox";
+            labelElement.appendChild(checkbox);
+            labelElement.appendChild(labelText);
+            container.appendChild(labelElement);
             checkbox.addEventListener("change", function (e) {
                 var c = e.srcElement;
                 setPreference(_this.key, c.checked);
             });
-            labelElement.appendChild(checkbox);
-            labelElement.appendChild(labelText);
-            container.appendChild(labelElement);
             return container;
         };
         return PreferenceEntry;
@@ -169,10 +171,10 @@ var UI;
     function removeCarousel() {
         var carousel = document.getElementById("block-homepagecarrousel");
         var summaryCarousel = document.getElementById("block-numerocarrousel");
-        if (carousel != null) {
+        if (carousel !== null) {
             carousel.parentNode.removeChild(carousel);
         }
-        if (summaryCarousel != null) {
+        if (summaryCarousel !== null) {
             summaryCarousel.parentNode.removeChild(summaryCarousel);
         }
     }
@@ -227,7 +229,7 @@ var Summary;
 (function (Summary) {
     /* Utils */
     /* Classes */
-    var Sommaire = (function () {
+    var Sommaire = /** @class */ (function () {
         function Sommaire() {
             this.number = -1;
             this.articles = [];
@@ -255,7 +257,7 @@ var Summary;
         Sommaire.prototype.getSummary = function () {
             var _this = this;
             var storedSummary = localStorage.getItem("summary-" + this.number);
-            if (storedSummary != null) {
+            if (storedSummary !== null) {
                 this.articles = JSON.parse(storedSummary);
                 overrideArticleNav(this);
             }
@@ -264,7 +266,7 @@ var Summary;
                     var parser = new DOMParser();
                     var summaryPage = parser.parseFromString(data, "text/html");
                     var summaryLinks = summaryPage.querySelectorAll(".views-field-title > a");
-                    if (summaryLinks.length == 0) {
+                    if (summaryLinks.length === 0) {
                         return;
                     }
                     for (var i = 0; i < summaryLinks.length; i++) {
