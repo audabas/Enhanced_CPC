@@ -3,7 +3,7 @@
 // @namespace   https://github.com/bastien09
 // @homepageURL https://github.com/bastien09/Enhanced_CPC
 // @include     https://www.canardpc.com/*
-// @version     1.1.1
+// @version     1.1.2
 // @grant       none
 // ==/UserScript==
 // 
@@ -53,11 +53,13 @@ var Preferences;
             checkbox.type = "checkbox";
             checkbox.checked = isEnabled;
             checkbox.style.webkitAppearance = "checkbox";
+            checkbox.style.setProperty("-moz-appearance", "checkbox");
+            checkbox.style.height = "16px";
             labelElement.appendChild(checkbox);
             labelElement.appendChild(labelText);
             container.appendChild(labelElement);
             checkbox.addEventListener("change", function (e) {
-                var c = e.srcElement;
+                var c = e.target;
                 setPreference(_this.key, c.checked);
             });
             return container;

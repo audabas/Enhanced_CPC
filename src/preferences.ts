@@ -49,6 +49,8 @@ namespace Preferences {
             checkbox.type = "checkbox";
             checkbox.checked = isEnabled;
             checkbox.style.webkitAppearance = "checkbox";
+            checkbox.style.setProperty("-moz-appearance", "checkbox");
+            checkbox.style.height = "16px";
             
             labelElement.appendChild(checkbox);
             labelElement.appendChild(labelText);
@@ -56,7 +58,7 @@ namespace Preferences {
             container.appendChild(labelElement);
 
             checkbox.addEventListener("change", (e) => {
-                let c = <HTMLInputElement> e.srcElement;
+                let c = <HTMLInputElement> e.target;
                 setPreference(this.key, c.checked);
             });
 
